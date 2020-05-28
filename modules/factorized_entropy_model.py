@@ -5,7 +5,7 @@ from torch.nn.parameter import Parameter
 import torch.nn.functional as f
 import math
 
-from utilis import ops
+from utils import ops
 
 class Entropy_bottleneck(nn.Module):
     def __init__(self,channel,init_scale=10,filters = (3,3,3),likelihood_bound=1e-6,

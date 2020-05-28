@@ -5,7 +5,7 @@ from torch.autograd import Variable
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from PIL import Image
-from utilis import torch_msssim, dali
+from utils import torch_msssim, dali
 from modules import model
 
 from nvidia.dali.plugin.pytorch import DALIGenericIterator

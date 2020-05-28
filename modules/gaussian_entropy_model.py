@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as f
-from utilis import ops
+from utils import ops
 
 class Distribution_for_entropy2(nn.Module):
     def __init__(self):

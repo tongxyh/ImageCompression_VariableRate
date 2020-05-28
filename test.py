@@ -7,7 +7,7 @@ from PIL import Image
 
 from modules import model
 from modules.fast_context_model import Context4
-from utilis import torch_msssim
+from utils import torch_msssim
 
 # Load model
 image_comp = model.Image_Coder_Context(M=192,N2=192)
