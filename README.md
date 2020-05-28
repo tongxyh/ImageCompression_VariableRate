@@ -1,11 +1,14 @@
 # Introduction
 This project is provided by NJU Vision Lab. I will keep updating the code and please contact me (tong@smail.nju.edu.cn) if you have any questions.
+
 # Quick start
+
 1. download pretrained models here
 
 2. running test:   
-    
+    ```sh    
     python test.py <input_image> <rec_image>
+    ```
 
 # Publication
 
