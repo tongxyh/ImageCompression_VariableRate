@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from modules.factorized_entropy_model import Entropy_bottleneck
-from modules.gaussian_entropy_model import Distribution_for_entropy, Distribution_for_entropy2
+from modules.gaussian_entropy_model import Distribution_for_entropy2
 from modules.basic_module import ResBlock, Non_local_Block
 from modules.fast_context_model import Context4
 
