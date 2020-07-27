@@ -5,10 +5,11 @@ from torch.autograd import Variable
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from PIL import Image
-from utils import torch_msssim, dali
+from utils import torch_msssim
 from modules import model
 
-from nvidia.dali.plugin.pytorch import DALIGenericIterator
+# from utils import dali
+# from nvidia.dali.plugin.pytorch import DALIGenericIterator
 
 class SimpleDataset(Dataset):
     def __init__(self, input_path, img_size = 256):
@@ -60,12 +61,11 @@ class MyDataset(Dataset):
 def eval():
     pass
 
-# train_data = SimpleDataset(input_path='../dataset/')
-# train_loader = DataLoader(train_data, batch_size=12, shuffle=True,num_workers=1)
-pipe = dali.SimplePipeline('../datasets', batch_size=12, num_threads = 2, device_id = 0)
-pipe.build()
-
-train_loader = DALIGenericIterator(pipe, ['data'], size=90306)
+train_data = SimpleDataset(input_path='../dataset/')
+train_loader = DataLoader(train_data, batch_size=12, shuffle=True,num_workers=8)
+# pipe = dali.SimplePipeline('../datasets', batch_size=12, num_threads = 2, device_id = 0)
+# pipe.build()
+# train_loader = DALIGenericIterator(pipe, ['data'], size=90306)
 
 TRAINING = True
 CONTEXT = True
