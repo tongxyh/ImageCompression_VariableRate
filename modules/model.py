@@ -159,7 +159,7 @@ class Image_coding(nn.Module):
         self.encoder = Enc(num_features, self.M1, self.M, self.N2)
         self.factorized_entropy_func = Entropy_bottleneck(N2)
         self.hyper_dec = Hyper_Dec(N2, M)
-        self.gaussin_entropy_func = Distribution_for_entropy()
+        self.gaussin_entropy_func = Distribution_for_entropy2()
         self.decoder = Dec(num_features, self.M1,self.M)
 
     def add_noise(self, x):
@@ -190,7 +190,7 @@ class Image_Coder_Context(nn.Module):
         self.encoder = Enc(num_features, self.M1, self.M, self.N2)
         self.factorized_entropy_func = Entropy_bottleneck(N2)
         self.hyper_dec = Hyper_Dec(N2, M)
-        self.gaussian_entropy_func = Distribution_for_entropy()
+        self.gaussian_entropy_func = Distribution_for_entropy2()
         self.context = Context4(M)
         self.decoder = Dec(num_features, self.M1,self.M)
 

@@ -61,7 +61,7 @@ class MyDataset(Dataset):
 def eval():
     pass
 
-train_data = SimpleDataset(input_path='../dataset/')
+train_data = SimpleDataset(input_path='/datasets/')
 train_loader = DataLoader(train_data, batch_size=12, shuffle=True,num_workers=8)
 # pipe = dali.SimplePipeline('../datasets', batch_size=12, num_threads = 2, device_id = 0)
 # pipe.build()
