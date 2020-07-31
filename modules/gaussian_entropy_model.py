@@ -4,6 +4,13 @@ import torch.nn as nn
 import torch.nn.functional as f
 from utils import ops
 
+class Distribution_for_entropy(nn.Module):
+    def __init__(self):
+        super(Distribution_for_entropy,self).__init__()
+
+    def forward(self,x):
+        pass
+
 class Distribution_for_entropy2(nn.Module):
     def __init__(self):
         super(Distribution_for_entropy2,self).__init__()

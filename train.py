@@ -61,7 +61,7 @@ class MyDataset(Dataset):
 def eval():
     pass
 
-train_data = SimpleDataset(input_path='/datasets/')
+train_data = SimpleDataset(input_path='/datasets/img256x256/')
 train_loader = DataLoader(train_data, batch_size=12, shuffle=True,num_workers=8)
 # pipe = dali.SimplePipeline('../datasets', batch_size=12, num_threads = 2, device_id = 0)
 # pipe.build()
@@ -84,20 +84,20 @@ lr = 3e-5
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 if LOAD_EXIST:
-    image_comp = torch.load('params/ae.pkl')
+    image_comp = torch.load('ae.pkl')
 
 #params = list(image_comp.parameters()) + list(context.parameters())
 if SINGLE_MODEL:
     print("====> traning single model scaler")
     if LOAD_EXIST:
         if LOAD_SCALE:
-            scaler = torch.load('params/scaler.pkl')
+            scaler = torch.load('scaler.pkl')
             # scaler_hyper = torch.load('params/scaler_hyper.pkl')
         else:
             scaler = model.Scaler(channels = M).cuda()
             # scaler_hyper = model.Scaler(channels = N2).cuda()
-        params = list(scaler.parameters()) + list(scaler_hyper.parameters())
-        optimizer = torch.optim.Adam(params, lr=lr)
+        # params = list(scaler.parameters()) + list(scaler_hyper.parameters())
+        optimizer = torch.optim.Adam(scaler.parameters(), lr=lr)
     else:
         raise Exception("Need to Load Pretrained Model!")
 else:
@@ -111,26 +111,26 @@ elif METRIC == "PSNR":
 for epoch in range(400):
     rec_loss, bpp = 0., 0.
     for step, batch_x in enumerate(train_loader):
-        batch_x = batch_x[0]['data']
-        num_pixels = batch_x.size()[0]*batch_x.size()[2]*batch_x.size()[3]
-        batch_x = batch_x.type(dtype=torch.float32)
+        # batch_x = batch_x[0]['data']
+        # batch_x = batch_x.type(dtype=torch.float32)
         # batch_x = torch.cast(batch_x,"float")/255.0
-        batch_x = batch_x/255.0
-        # print(batch_x)
+        # batch_x = batch_x/255.0
+        batch_x = batch_x.cuda()
+        num_pixels = batch_x.size()[0]*batch_x.size()[2]*batch_x.size()[3]
+
         # Training = True, CONTEXT = True
         if SINGLE_MODEL:
             with torch.no_grad():
-                y_main, y_hyper = image_comp.module.encoder(batch_x)
+                y_main, y_hyper = image_comp.module.encoder(batch_x.cuda())
             y_main_q = scaler.decompress(image_comp.module.add_noise(scaler.compress(y_main)))
             
             rec = image_comp.module.decoder(y_main_q)
 
-            # y_hyper_q, p_hyper = image_comp.module.factorized_entropy_func(y_hyper, TRAINING) #Training = True
+            y_hyper_q, p_hyper = image_comp.module.factorized_entropy_func(y_hyper, TRAINING) #Training = True
             
             # TODO: scale here
-            y_hyper_q = scaler_hyper.decompress(image_comp.module.add_noise(scaler_hyper.compress(y_hyper)))
-
-            p_hyper = image_comp.module.factorized_entropy_func.likeli(y_hyper_q, quan_step = 1.0/scaler_hyper.factor ) #Training = True
+            # y_hyper_q = scaler_hyper.decompress(image_comp.module.add_noise(scaler_hyper.compress(y_hyper)))
+            # p_hyper = image_comp.module.factorized_entropy_func.likeli(y_hyper_q, quan_step = 1.0/scaler_hyper.factor ) #Training = True
 
             p_main = image_comp.module.hyper_dec(y_hyper_q)
             if CONTEXT:
