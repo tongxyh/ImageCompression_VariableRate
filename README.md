@@ -3,7 +3,7 @@ This project is provided by NJU Vision Lab. I will keep updating the code and pl
 
 # Quick start
 
-1. download pretrained models here (https://box.nju.edu.cn/d/9f1cceb9f85a49edb95a/)
+1. download pretrained models here (https://box.nju.edu.cn/d/9f1cceb9f85a49edb95a/) [**model link updated!**]
 
 2. running test:   
     ```sh    
