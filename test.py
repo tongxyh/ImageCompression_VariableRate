@@ -1,5 +1,5 @@
 import os,sys
-
+import math
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -11,9 +11,9 @@ from utils import torch_msssim
 
 # Load model
 image_comp = model.Image_Coder_Context(M=192,N2=192)
-pretrained_model = torch.load('ae.pkl',map_location='cpu')
+pretrained_model = torch.load('./weights/ae.pkl',map_location='cpu')
 image_comp.load_state_dict(pretrained_model.module.state_dict())
-scaler = torch.load('scaler.pkl',map_location='cpu')
+scaler = torch.load('./weights/scaler_0.pkl',map_location='cpu')
 
 msssim_func = torch_msssim.MS_SSIM(max_val=1).cuda()
 
@@ -76,13 +76,16 @@ def main(im_dir, rec_dir, GPU=False):
 
 if __name__ == '__main__':
     # from glob import glob
-    # bpps, msssims = 0., 0.
-    # for i in glob("/kodak/*"):
+    # bpps, msssims, msim_db = 0., 0., 0.
+    # images = glob("/workspace/shared/Kodak/*")
+    # nums = len(images)
+    # for i in images:
     #     bpp, msssim, psnr = main(i, "test.png", GPU = True)
     #     bpps += bpp
     #     msssims += msssim
+    #     msim_db += np.log10(1.-msssim)
 
-    # print(bpps/24., -10. * np.log10(1.-msssims/24.))
+    # print(bpps/nums, -10. * np.log10(1.-msssims/nums), -10. * msim_db/nums)
     
     bpp, msssim, psnr = main(sys.argv[1], sys.argv[2], GPU = True)
-    print("bpp: %0.4f, PSNR: %0.4f, MS-SSIM (dB): %0.4f"%(bpp,psnr,msssim))
+    print("bpp: %0.4f, PSNR: %0.4f, MS-SSIM (dB): %0.4f"%(bpp,psnr,-10*math.log10(1.-msssim)))
